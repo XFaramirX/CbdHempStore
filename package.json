@@ -37,12 +37,10 @@
     "@material-ui/icons": "4.2.1",
     "@zeit/next-sass": "1.0.1",
     "classnames": "2.2.6",
+    "express": "^4.17.1",
+    "firebase": "^7.13.2",
     "moment": "2.24.0",
-<<<<<<< HEAD
     "next": "9.3.4",
-=======
-    "next": "9.3.2",
->>>>>>> d10cf7f2a0cf16ec13f2b234e88605748e060900
     "next-compose-plugins": "2.2.0",
     "next-images": "1.1.2",
     "nextjs-redirect": "1.0.2",

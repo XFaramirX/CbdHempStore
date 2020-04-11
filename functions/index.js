@@ -1,8 +1,20 @@
 const functions = require('firebase-functions');
+const express = require('express');
+const app = express();
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-exports.helloWorld = functions.https.onRequest((request, response) => {
-  response.send('Hello from Firebase!');
-});
+const { validateFirebaseIdToken } = require('./util/firebaseTokenValidate');
+
+const { getProducts, addProduct } = require('./handlers/products');
+const { signUp, signIn, getUsers } = require('./handlers/users');
+
+app.get('/products', validateFirebaseIdToken, getProducts);
+
+app.post('/product', validateFirebaseIdToken, addProduct);
+
+app.post('/signup', signUp);
+
+app.post('/signin', signIn);
+
+app.get('/users', validateFirebaseIdToken, getUsers);
+
+exports.api = functions.https.onRequest(app);

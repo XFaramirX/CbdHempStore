@@ -8,6 +8,9 @@ const {
   getProduct,
   getAllProducts,
   addComment,
+  likeProduct,
+  unlikeProduct,
+  deleteProduct,
 } = require('./handlers/products');
 const {
   signUp,
@@ -19,18 +22,21 @@ const {
 } = require('./handlers/users');
 
 //Product Routes
-
+app.get('/products', validateFirebaseIdToken, getAllProducts);
 app.post('/product', validateFirebaseIdToken, addProduct);
 app.get('/product/:productId', getProduct);
 app.post('/product/:productId/comment', validateFirebaseIdToken, addComment);
-app.get('/products', validateFirebaseIdToken, getAllProducts);
+app.post('/product/:productId/like', validateFirebaseIdToken, likeProduct);
+app.post('/product/:productId/unlike', validateFirebaseIdToken, unlikeProduct);
+
+app.delete('/product/:productId', validateFirebaseIdToken, deleteProduct);
 
 //User Routes
 app.post('/signup', signUp);
 app.post('/signin', signIn);
+app.get('/users', validateFirebaseIdToken, getAllUsers);
 app.put('/user', validateFirebaseIdToken, updateUser);
 app.get('/user', validateFirebaseIdToken, getAuthenticatedUser);
-app.get('/users', validateFirebaseIdToken, getAllUsers);
 app.post('/user/image', validateFirebaseIdToken, uploadImage);
 
 exports.api = functions.https.onRequest(app);

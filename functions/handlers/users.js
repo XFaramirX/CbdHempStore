@@ -41,7 +41,6 @@ exports.signUp = (req, res) => {
         location: '',
         email: userRecord.email,
         createdAt: new Date().toISOString(),
-        handle: userRecord.uid,
         userId: userRecord.uid,
       };
       try {

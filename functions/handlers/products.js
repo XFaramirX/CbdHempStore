@@ -31,7 +31,7 @@ exports.addProduct = (req, res) => {
     });
 };
 
-exports.getProducts = (req, res) => {
+exports.getAllProducts = (req, res) => {
   db.collection('products')
     .orderBy('name', 'desc')
     .get()
@@ -44,5 +44,64 @@ exports.getProducts = (req, res) => {
     })
     .catch((err) => {
       res.status(500).json({ message: `Error getting documents ${err}` });
+    });
+};
+
+exports.getProduct = (req, res) => {
+  let productData = {};
+  db.doc(`/products/${req.params.productId}`)
+    .get()
+    .then((doc) => {
+      if (!doc.exists) {
+        return res.status(404).json({ error: 'Product not found' });
+      }
+      productData = doc.data();
+      productData.productId = doc.id;
+      return db
+        .collection('comments')
+        .orderBy('createdAt', 'desc')
+        .where('productId', '==', req.params.productId)
+        .get();
+    })
+    .then((data) => {
+      productData.comments = [];
+
+      data.forEach((doc) => {
+        productData.comments.push(doc.data());
+      });
+      return res.json(productData);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ error: error.code });
+    });
+};
+
+exports.addComment = (req, res) => {
+  if (isEmpty(req.body.body))
+    return res.status(400).json({ error: 'Must not be empty' });
+
+  const newComment = {
+    body: req.body.body,
+    createdAt: new Date().toISOString(),
+    productId: req.params.productId,
+    userHandle: req.user.uid,
+    userImage: req.user.picture,
+  };
+
+  db.doc(`/product/${req.params.productId}`)
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        res.status(404).json({ error: 'Document not found' });
+      }
+      return db.collection('comments').add(newComment);
+    })
+    .then(() => {
+      res.status(200).json(newComment);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: 'Something went wrong' });
     });
 };

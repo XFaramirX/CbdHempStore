@@ -18,7 +18,6 @@ const reduceUserDetails = (data) => {
     }
   }
   if (!isEmpty(data.location.trim())) userDetails.location = data.location;
-  data.photoURL = 'test';
   return userDetails;
 };
 

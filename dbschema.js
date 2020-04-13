@@ -8,6 +8,7 @@ let db = [
       bio: '',
       photoURL: 'http://www.example.com/12345678/photo.png',
       website: '',
+      location: '',
       disabled: false,
       handle: req.body.handle,
       disabled: false,

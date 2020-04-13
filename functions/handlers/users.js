@@ -8,6 +8,11 @@ exports.signUp = (req, res) => {
     email: req.body.email,
     password: req.body.password,
     confirmPassword: req.body.confirmPassword,
+    displayName: '',
+    photoURL: 'http://www.example.com/12345678/photo.png',
+    disabled: false,
+    phoneNumber: '+11234567890',
+    emailVerified: false,
   };
 
   const errors = {};
@@ -37,6 +42,7 @@ exports.signUp = (req, res) => {
         email: userRecord.email,
         createdAt: new Date().toISOString(),
         handle: userRecord.uid,
+        userId: userRecord.uid,
       };
       try {
         db.doc(`/users/${userRecord.uid}`).set(userCredentials);
@@ -100,7 +106,7 @@ exports.signIn = (req, res) => {
     });
 };
 
-exports.getUsers = (req, res) => {
+exports.getAllUsers = (req, res) => {
   const maxResults = 50; // optional arg.
 
   admin
@@ -203,6 +209,18 @@ exports.uploadImage = (req, res) => {
           40
         )}?alt=media`;
 
+        admin
+          .auth()
+          .updateUser(req.user.uid, {
+            photoURL: imageUrl,
+          })
+          .then(function (userRecord) {
+            console.log('Successfully updated user', userRecord.toJSON());
+          })
+          .catch(function (error) {
+            console.log('Error updating user:', error);
+          });
+
         return db.doc(`/users/${req.user.uid}`).update({ imageUrl: imageUrl });
       })
       .then(() => {
@@ -222,7 +240,7 @@ exports.updateUser = (req, res) => {
   db.doc(`/users/${req.user.uid}`)
     .update(userDetails)
     .then(() => {
-      return res.status(200).json({ message: 'uptaded succesfully' });
+      return res.status(200).json({ message: 'updated succesfully' });
     })
     .catch(() => {
       return res.status(500).json({ error: error.code });

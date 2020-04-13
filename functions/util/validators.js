@@ -7,7 +7,7 @@ const isEmpty = (string) => {
 };
 
 const reduceUserDetails = (data) => {
-  let userDetails = {};
+  const userDetails = {};
   if (!isEmpty(data.name.trim())) userDetails.name = data.name;
   if (!isEmpty(data.bio.trim())) userDetails.bio = data.bio;
   if (!isEmpty(data.website.trim())) {

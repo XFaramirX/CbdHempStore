@@ -217,18 +217,41 @@ exports.uploadImage = (req, res) => {
 };
 
 exports.updateUser = (req, res) => {
-  return admin
-    .auth()
-    .updateUser(req.user.uid, {
-      metadata: {
-        lastSignInTime: 'Mon, 12 Apr 2020 15:57:27 GMT',
-      },
+  let userDetails = reduceUserDetails(req.body);
+
+  db.doc(`/users/${req.user.uid}`)
+    .update(userDetails)
+    .then(() => {
+      return res.status(200).json({ message: 'uptaded succesfully' });
     })
-    .then(function (userRecord) {
-      // See the UserRecord reference doc for the contents of userRecord.
-      res.status(200).json({ message: userRecord.toJSON() });
+    .catch(() => {
+      return res.status(500).json({ error: error.code });
+    });
+};
+
+exports.getAuthenticatedUser = (req, res) => {
+  let userData = {};
+  db.doc(`/users/${req.user.uid}`)
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        userData.userCredentials = doc.data();
+        return db
+          .collection('likes')
+          .where('userHandle', '==', req.user.uid)
+          .get();
+      }
     })
-    .catch(function (error) {
-      console.log('Error updating user:', error);
+    .then((data) => {
+      userData.likes = [];
+      data.forEach((doc) => {
+        userData.likes.push(doc.data());
+      });
+      return res.json(userData);
+    })
+    .catch((error) => {
+      console.log(error);
+
+      return res.status(500).json({ error: error.code });
     });
 };

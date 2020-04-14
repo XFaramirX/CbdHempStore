@@ -21,7 +21,7 @@ const {
   getAuthenticatedUser,
   getUserDetails,
   markNotificationsRead,
-  getNotifications, 
+  getNotifications,
 } = require('./handlers/users');
 
 //Product Routes
@@ -114,7 +114,7 @@ exports.onUserImageChange = functions.firestore
       const batch = db.batch();
       return db
         .collection('products')
-        .where('userHandle', '==', change.before.data().handle)
+        .where('userHandle', '==', change.before.data().userId)
         .get()
         .then((data) => {
           data.forEach((doc) => {

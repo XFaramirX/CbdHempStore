@@ -14,7 +14,6 @@ exports.addProduct = (req, res) => {
   }
 
   const newProduct = {
-    id: req.body.id,
     name: req.body.name,
     createdBy: req.user.email,
     userHandle: req.user.uid,
@@ -23,6 +22,7 @@ exports.addProduct = (req, res) => {
     timestamp: FieldValue.serverTimestamp(),
     likeCount: 0,
     commentCount: 0,
+    userImage: req.user.photoURL,
   };
 
   db.collection('products')

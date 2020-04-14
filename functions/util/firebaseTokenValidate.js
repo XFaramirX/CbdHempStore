@@ -1,4 +1,4 @@
-const { admin } = require('../util/admin');
+const { admin, db } = require('../util/admin');
 
 const validateFirebaseIdToken = async (req, res, next) => {
   console.log('Check if request is authorized with Firebase ID token');
@@ -35,18 +35,26 @@ const validateFirebaseIdToken = async (req, res, next) => {
     res.status(403).send('Unauthorized');
     return;
   }
-
-  try {
-    const decodedIdToken = await admin.auth().verifyIdToken(idToken);
-    console.log('ID Token correctly decoded', decodedIdToken);
-    req.user = decodedIdToken;
-    next();
-    return;
-  } catch (error) {
-    console.error('Error while verifying Firebase ID token:', error);
-    res.status(403).send('Unauthorized');
-    return;
-  }
+  admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      req.user = decodedToken;
+      return db
+        .collection('users')
+        .where('userId', '==', req.user.uid)
+        .limit(1)
+        .get();
+    })
+    .then((data) => {
+      req.user.uid = data.docs[0].data().userId;
+      req.user.photoURL = data.docs[0].data().imageUrl;
+      return next();
+    })
+    .catch((err) => {
+      console.error('Error while verifying token ', err);
+      return res.status(403).json(err);
+    });
 };
 
 module.exports = { validateFirebaseIdToken };

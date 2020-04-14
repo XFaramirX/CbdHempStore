@@ -292,3 +292,87 @@ exports.getAuthenticatedUser = (req, res) => {
       return res.status(500).json({ error: error.code });
     });
 };
+
+exports.getUserDetails = (req, res) => {
+  let userData = {};
+  db.doc(`/users/${req.params.handle}`)
+    .get()
+    .then((doc) => {
+      console.log('HELP');
+
+      console.log(req.params.handle);
+      console.log(doc.exists);
+
+      if (doc.exists) {
+        userData.user = doc.data();
+
+        return db
+          .collection('products')
+          .where('userHandle', '==', req.params.handle)
+          .orderBy('createdAt', 'desc')
+          .get();
+      } else {
+        return res.status(404).json({ errror: 'User not found' });
+      }
+    })
+    .then((data) => {
+      userData.products = [];
+      data.forEach((doc) => {
+        userData.products.push({
+          body: doc.data().body,
+          createdAt: doc.data().createdAt,
+          userHandle: doc.data().userHandle,
+          userImage: doc.data().userImage,
+          likeCount: doc.data().likeCount,
+          commentCount: doc.data().commentCount,
+          productId: doc.id,
+        });
+      });
+      return res.json(userData);
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
+    });
+};
+
+exports.markNotificationsRead = (req, res) => {
+  let batch = db.batch();
+  req.body.forEach((notificationId) => {
+    const notification = db.doc(`/notifications/${notificationId}`);
+    batch.update(notification, { read: true });
+  });
+  batch
+    .commit()
+    .then(() => {
+      return res.json({ message: 'Notifications marked read' });
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
+    });
+};
+
+exports.getNotifications = async (req, res) => {
+  let notifications = [];
+  var notificationsRef = db.collection('notifications');
+
+  notificationsRef
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        notifications.push({
+          docId: doc.id,
+          type: doc.data().type,
+          recipient: doc.data().recipient,
+          read: doc.data().read,
+        });
+      });
+    })
+    .then(() => {
+      return res.json(notifications);
+    })
+    .catch((err) => {
+      console.log('Error getting documents', err);
+    });
+};

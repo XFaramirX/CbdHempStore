@@ -21,6 +21,7 @@ const {
   getAuthenticatedUser,
   getUserDetails,
   markNotificationsRead,
+  getNotifications, 
 } = require('./handlers/users');
 
 //Product Routes
@@ -40,6 +41,10 @@ app.get('/users', validateFirebaseIdToken, getAllUsers);
 app.put('/user', validateFirebaseIdToken, updateUser);
 app.get('/user', validateFirebaseIdToken, getAuthenticatedUser);
 app.post('/user/image', validateFirebaseIdToken, uploadImage);
+app.get('/user/:handle', getUserDetails);
+
+app.get('/notifications', validateFirebaseIdToken, getNotifications);
+app.post('/notifications', validateFirebaseIdToken, markNotificationsRead);
 
 exports.api = functions.https.onRequest(app);
 

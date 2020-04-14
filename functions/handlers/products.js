@@ -95,10 +95,10 @@ exports.addComment = (req, res) => {
     userImage: req.user.picture,
   };
 
-  db.doc(`/product/${req.params.productId}`)
+  db.doc(`/products/${req.params.productId}`)
     .get()
     .then((doc) => {
-      if (doc.exists) {
+      if (!doc.exists) {
         res.status(404).json({ error: 'Document not found' });
       }
       return db.collection('comments').add(newComment);

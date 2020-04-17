@@ -5,11 +5,14 @@ const { isEmpty } = require('../util/validators');
 exports.addProduct = (req, res) => {
   const errors = {};
 
-  if (isEmpty(req.body.id)) {
-    errors.id = 'id should not be empty';
+  if (req.body.productImageUrl == undefined || req.body.productImageUrl == '') {
+    errors.id = 'should not be empty';
     return res.status(400).json(errors);
-  } else if (isEmpty(req.body.description)) {
-    errors.id = 'description should not be empty';
+  } else if (req.body.description == undefined || req.body.description == '') {
+    errors.description = 'should not be empty';
+    return res.status(400).json(errors);
+  } else if (req.body.name == undefined || req.body.name == '') {
+    errors.name = 'should not be empty';
     return res.status(400).json(errors);
   }
 
@@ -19,7 +22,7 @@ exports.addProduct = (req, res) => {
     userHandle: req.user.uid,
     description: req.body.description,
     createdAt: new Date().toISOString(),
-    timestamp: FieldValue.serverTimestamp(),
+    productImage: req.body.productImageUrl,
     likeCount: 0,
     commentCount: 0,
     userImage: req.user.photoURL,

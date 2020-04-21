@@ -5,7 +5,7 @@ import { action } from '@storybook/addon-actions';
 import SectionExamples from './SectionExamples.js';
 
 export default {
-  title: 'Styled Button',
+  title: 'SectionExamples',
 };
 
 export const Default = () => (

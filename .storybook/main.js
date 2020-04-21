@@ -1,6 +1,7 @@
 module.exports = {
   stories: [
     '../components/**/**/*.stories.js',
+    '../components/**/*.stories.js',
     '../pages-sections/**/*.stories.js',
   ],
   addons: [
@@ -8,7 +9,7 @@ module.exports = {
     '@storybook/addon-actions',
     '@storybook/addon-links',
     '@storybook/addon-actions/register',
-
+    'storybook-addon-styled-component-theme/dist/register',
     '@storybook/addon-a11y/register',
     {
       name: '@storybook/addon-docs',

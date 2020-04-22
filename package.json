@@ -10,7 +10,8 @@
     "start": "next start",
     "install:clean": "rm -rf node_modules/ && rm -rf yarn.lock && rm -rf .next/ && yarn && yarn dev",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "chromatic": "CHROMATIC_APP_CODE=a9khygkayrf chromatic"
   },
   "repository": {
     "type": "git",
@@ -75,6 +76,7 @@
     "@storybook/addons": "^5.3.18",
     "@storybook/react": "^5.3.18",
     "react-scripts": "^3.4.1",
-    "react-test-renderer": "^16.13.1"
+    "react-test-renderer": "^16.13.1",
+    "storybook-chromatic": "^3.5.3"
   }
 }

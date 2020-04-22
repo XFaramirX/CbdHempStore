@@ -10,6 +10,10 @@ exports[`Storyshots ButtonMaterial Data Table 1`] = `null`;
 
 exports[`Storyshots ButtonMaterial With A Button 1`] = `null`;
 
+exports[`Storyshots InboxScreen Default 1`] = `null`;
+
+exports[`Storyshots InboxScreen Error 1`] = `null`;
+
 exports[`Storyshots Material Button Default 1`] = `null`;
 
 exports[`Storyshots Material Button Primary 1`] = `null`;

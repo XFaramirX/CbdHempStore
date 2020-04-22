@@ -13,6 +13,7 @@ export default function Task({
           type="checkbox"
           defaultChecked={state === 'TASK_ARCHIVED'}
           disabled={true}
+          style={{ textOverflow: 'ellipsis' }}
           name="checked"
         />
         <span className="checkbox-custom" onClick={() => onArchiveTask(id)} />
@@ -35,7 +36,6 @@ export default function Task({
         )}
       </div>
     </div>
-    
   );
 }
 

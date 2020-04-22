@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Badge Types 1`] = `null`;
+
+exports[`Storyshots ButtonMaterial As Dynamic Variables 1`] = `null`;
+
+exports[`Storyshots ButtonMaterial Botoncon Material 1`] = `null`;
+
+exports[`Storyshots ButtonMaterial Data Table 1`] = `null`;
+
+exports[`Storyshots ButtonMaterial With A Button 1`] = `null`;
+
+exports[`Storyshots Material Button Default 1`] = `null`;
+
+exports[`Storyshots Material Button Primary 1`] = `null`;
+
+exports[`Storyshots Material Button Secondary 1`] = `null`;
+
+exports[`Storyshots SectionExamples Default 1`] = `null`;
+
+exports[`Storyshots Styled Button Default 1`] = `null`;
+
+exports[`Storyshots Task Archived 1`] = `null`;
+
+exports[`Storyshots Task Default 1`] = `null`;
+
+exports[`Storyshots Task Pinned 1`] = `null`;
+
+exports[`Storyshots TaskList Default 1`] = `null`;
+
+exports[`Storyshots TaskList Empty 1`] = `null`;
+
+exports[`Storyshots TaskList Loading 1`] = `null`;
+
+exports[`Storyshots TaskList With Pinned Tasks 1`] = `null`;
+
+exports[`Storyshots Test to Storybook 1`] = `null`;

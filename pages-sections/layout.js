@@ -11,6 +11,13 @@ class Inicio extends Component {
     return (
       <Provider store={store}>
         <h1>Hello World</h1>
+
+
+
+
+
+
+        
         <style jsx>{`
           .container {
             margin: 50px;

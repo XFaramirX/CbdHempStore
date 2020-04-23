@@ -13,7 +13,7 @@ export const overridings = {
   name: 'Light Theme',
   palette: {
     primary: {
-      light: accentGreen,
+      light: darkGreen,
       main: primaryGreen,
       dark: darkGreen,
       contrastText: "#fff"

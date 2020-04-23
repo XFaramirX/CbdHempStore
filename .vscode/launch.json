@@ -5,11 +5,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "node",
+      "type": "chrome",
       "request": "launch",
-      "name": "Launch Program",
-      "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/functions/"
+      "name": "Launch Chrome against localhost",
+      "url": "http://localhost:3000/inicio",
+      "webRoot": "${workspaceFolder}"
     }
   ]
 }

@@ -1,47 +1,56 @@
 import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
+
+//Fetching and setting up data
 import axios from 'axios';
 import { Provider } from 'react-redux';
 import store from '../src/lib/redux';
 
+//Visual-Material
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-
 import LightTheme from '../themes/light-theme.js';
 import DarkTheme from '../themes/dark-theme.js';
-
-import SectionTypography from 'pages-sections/Components-Sections/SectionTypography.js';
-// nodejs library that concatenates classes
-import classNames from 'classnames';
-// react components for routing our app without refresh
-import Link from 'next/link';
-// @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles';
-// @material-ui/icons
-// core components
-import Header from 'components/Header/Header.js';
-import HeaderLinks from 'components/Header/HeaderLinks.js';
-
-import GridContainer from 'components/Grid/GridContainer.js';
-import GridItem from 'components/Grid/GridItem.js';
 import Parallax from 'components/Parallax/Parallax.js';
 import Grid from '@material-ui/core/Grid';
 
-import Footer from 'components/Footer/Footer.js';
-
+//MaterialNextJs Kit
+import SectionTypography from 'pages-sections/Components-Sections/SectionTypography.js';
+import classNames from 'classnames';
 import styles from 'assets/jss/nextjs-material-kit/pages/components.js';
+
+//PageRouting
+import Link from 'next/link';
+
+//MaterialUI Components
+import Button from '@material-ui/core/Button';
+import Header from 'components/Header/Header.js';
+import HeaderLinks from 'components/Header/HeaderLinks.js';
+import GridContainer from 'components/Grid/GridContainer.js';
+import GridItem from 'components/Grid/GridItem.js';
+import Footer from 'components/Footer/Footer.js';
 import Paper from '@material-ui/core/Paper';
-import Index from '../components/CustomComponents/practice';
 
 const useStyles = makeStyles(styles);
 
-class Layout extends Component {
+class iniciamos extends Component {
   constructor(props) {
     super(props);
     this.state = {
       theme: DarkTheme,
-      products: null,
-      data: null,
+      product: null,
     };
+  }
+
+  async componentDidMount() {
+    const res = await axios.get(
+      'https://us-central1-cbhempstore-staging.cloudfunctions.net/api/product/CLp9jC8jVECXPOSDLRGN'
+    );
+    const data = await res.data;
+
+    console.log(`Show data fetched. Count: ${data.length}`);
+    this.setState({
+      product: data,
+    });
   }
 
   changeTheme(props) {
@@ -53,15 +62,34 @@ class Layout extends Component {
     }
   }
   render() {
-    return (
-      <Page theme={this.state.theme} onClick={() => this.changeTheme()}></Page>
-    );
+    if (this.state.product == null) {
+      return (
+        <Index
+          theme={this.state.theme}
+          onClick={() => this.changeTheme()}
+          product={{
+            name: 'loading',
+          }}
+        ></Index>
+      );
+    } else {
+      return (
+        <Index
+          theme={this.state.theme}
+          onClick={() => this.changeTheme()}
+          product={this.state.product}
+        ></Index>
+      );
+    }
   }
 }
 
-const Page = (props) => {
+export default iniciamos;
+
+const Index = (props) => {
   const classes = useStyles();
   const { ...rest } = props;
+
   return (
     <MuiThemeProvider theme={props.theme}>
       <div>
@@ -90,7 +118,6 @@ const Page = (props) => {
                 </GridItem>
                 <GridItem>
                   <h1>TEST</h1>
-                  <Index></Index>
                   <div>
                     <Button variant="contained" onClick={props.onClick}>
                       Default
@@ -121,7 +148,7 @@ const Page = (props) => {
             <div className={classes.root}>
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={8}>
-                  <p>test</p>
+                  <p>{props.product.name}</p>
                 </Grid>
                 <Grid item xs={12} sm={4}>
                   <Paper className={classes.paper}>Profile...</Paper>
@@ -143,5 +170,3 @@ const Page = (props) => {
     </MuiThemeProvider>
   );
 };
-
-export default Layout;

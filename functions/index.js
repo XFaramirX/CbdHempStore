@@ -2,7 +2,9 @@ const functions = require('firebase-functions');
 const app = require('express')();
 const { db } = require('./util/admin');
 const { validateFirebaseIdToken } = require('./util/firebaseTokenValidate');
+const cors = require('cors');
 
+app.use(cors());
 const {
   addProduct,
   getProduct,
@@ -139,7 +141,10 @@ exports.onProductDelete = functions.firestore
         data.forEach((doc) => {
           batch.delete(db.doc(`/comments/${doc.id}`));
         });
-        return db.collection('likes').where('productId', '==', productId).get();
+        return db
+          .collection('likes')
+          .where('productId', '==', productId)
+          .get();
       })
       .then((data) => {
         data.forEach((doc) => {

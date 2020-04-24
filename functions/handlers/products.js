@@ -14,6 +14,9 @@ exports.addProduct = (req, res) => {
   } else if (req.body.name == undefined || req.body.name == '') {
     errors.name = 'should not be empty';
     return res.status(400).json(errors);
+  } else if (req.body.price == undefined || req.body.price == '') {
+    errors.name = 'should not be empty';
+    return res.status(400).json(errors);
   }
 
   const newProduct = {
@@ -23,6 +26,7 @@ exports.addProduct = (req, res) => {
     description: req.body.description,
     createdAt: new Date().toISOString(),
     productImage: req.body.productImageUrl,
+    price: req.user.price,
     likeCount: 0,
     commentCount: 0,
     userImage: req.user.photoURL,
@@ -57,6 +61,7 @@ exports.getAllProducts = (req, res) => {
 };
 
 exports.getProduct = (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
   let productData = {};
   db.doc(`/products/${req.params.productId}`)
     .get()

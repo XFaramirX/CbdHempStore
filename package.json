@@ -44,7 +44,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "firebase": "^7.14.0",
-    "moment": "2.24.0",
+    "moment": "2.29.4",
     "next": "9.3.4",
     "next-compose-plugins": "2.2.0",
     "next-images": "1.1.2",
